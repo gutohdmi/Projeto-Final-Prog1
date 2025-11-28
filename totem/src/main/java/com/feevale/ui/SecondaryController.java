@@ -1,7 +1,7 @@
 package com.feevale.ui;
 
-import com.feevale.model.Pedido;
-import com.feevale.model.PedidoStatus;
+import com.feevale.model.Atendimento;
+import com.feevale.model.StatusPedido;
 import com.feevale.service.PedidoController;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -10,8 +10,7 @@ import javafx.scene.control.*;
 public class SecondaryController {
 
     @FXML private ListView<String> listaAtendimentos;
-    @FXML private TextField campoId;
-    @FXML private ComboBox<PedidoStatus> comboStatus;
+    @FXML private ComboBox<StatusPedido> comboStatus;
 
     private static PedidoController controller;
 
@@ -22,7 +21,7 @@ public class SecondaryController {
     @FXML
     public void initialize() {
         comboStatus.setItems(
-                FXCollections.observableArrayList(PedidoStatus.values())
+                FXCollections.observableArrayList(StatusPedido.values())
         );
         atualizarLista();
     }
@@ -31,21 +30,23 @@ public class SecondaryController {
     private void atualizarLista() {
         listaAtendimentos.getItems().clear();
 
-        for (Pedido p : controller.listarAtendimentos()) {
+        for (Atendimento a : controller.listarAtendimentos()) {
             listaAtendimentos.getItems().add(
-                    p.getIdAtendimento() + " | " +
-                    p.getStatus() + " | R$ " +
-                    p.calcularTotal()
+                    "Atendimento " + a.getNumero() + " | " +
+                    a.getStatus() + " | R$ " +
+                    a.calcularTotal()
             );
         }
     }
 
     @FXML
     private void atualizarStatus() {
-        controller.atualizarStatus(
-                campoId.getText(),
-                comboStatus.getValue()
-        );
-        atualizarLista();
+        int index = listaAtendimentos.getSelectionModel().getSelectedIndex();
+
+        if (index >= 0) {
+            Atendimento atendimento = controller.listarAtendimentos().get(index);
+            controller.atualizarStatus(atendimento, comboStatus.getValue());
+            atualizarLista();
+        }
     }
 }

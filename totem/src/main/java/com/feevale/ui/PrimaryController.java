@@ -1,7 +1,7 @@
 package com.feevale.ui;
 
 import com.feevale.Repository.ProdutoRepository;
-import com.feevale.model.Pedido;
+import com.feevale.model.Atendimento;
 import com.feevale.model.Produto;
 import com.feevale.service.PedidoController;
 import javafx.collections.FXCollections;
@@ -15,11 +15,10 @@ public class PrimaryController {
     @FXML private ListView<String> listaPedido;
     @FXML private Label labelTotal;
 
-    private Pedido pedidoAtual;
+    private Atendimento atendimentoAtual;
     private static PedidoController controller;
     private static ProdutoRepository repository;
 
-    // Injetado pelo App.java
     public static void setDependencias(PedidoController c, ProdutoRepository r) {
         controller = c;
         repository = r;
@@ -35,17 +34,16 @@ public class PrimaryController {
                 new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 20, 1)
         );
 
-        pedidoAtual = controller.criarPedido();
+        atendimentoAtual = controller.novoAtendimento();
         atualizarLista();
     }
 
     @FXML
     private void adicionarItem() {
         Produto p = comboProdutos.getValue();
-        int qtd = spinnerQtd.getValue();
 
         if (p != null) {
-            pedidoAtual.adicionarItem(p, qtd);
+            controller.adicionarProduto(p);
             atualizarLista();
         }
     }
@@ -53,34 +51,35 @@ public class PrimaryController {
     @FXML
     private void removerItem() {
         int index = listaPedido.getSelectionModel().getSelectedIndex();
+
         if (index >= 0) {
-            pedidoAtual.removerItem(index);
+            Produto p = atendimentoAtual.getItens().get(index);
+            controller.removerProduto(p);
             atualizarLista();
         }
     }
 
     @FXML
     private void confirmarPedido() {
-        controller.confirmarPedido(pedidoAtual);
+        int numero = controller.confirmarPedido();
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION,
-                "Pedido confirmado!\nNúmero: " + pedidoAtual.getIdAtendimento());
+                "Pedido confirmado!\nNúmero: " + numero);
         alert.showAndWait();
 
-        pedidoAtual = controller.criarPedido();
+        atendimentoAtual = controller.novoAtendimento();
         atualizarLista();
     }
 
     private void atualizarLista() {
         listaPedido.getItems().clear();
-        pedidoAtual.getItens().forEach(item -> {
+
+        atendimentoAtual.getItens().forEach(produto -> {
             listaPedido.getItems().add(
-                    item.getProduto().getNome() + " x" +
-                    item.getQuantidade() + " = R$ " +
-                    item.getSubtotal()
+                    produto.getNome() + " - R$ " + produto.getPreco()
             );
         });
 
-        labelTotal.setText("Total: R$ " + pedidoAtual.calcularTotal());
+        labelTotal.setText("Total: R$ " + atendimentoAtual.calcularTotal());
     }
 }
