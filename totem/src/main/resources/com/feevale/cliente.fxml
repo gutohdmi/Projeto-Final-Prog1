@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<HBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.feevale.ui.PrimaryController"
+      spacing="20">
+
+    <!-- LADO ESQUERDO -->
+    <VBox spacing="10">
+        <padding>
+            <Insets top="10" right="10" bottom="10" left="10"/>
+        </padding>
+
+        <Label text="Produto:"/>
+        <ComboBox fx:id="comboProdutos"/>
+
+        <Label text="Quantidade:"/>
+        <Spinner fx:id="spinnerQtd"/>
+
+        <Button text="Adicionar" onAction="#adicionarItem"/>
+    </VBox>
+
+    <!-- LADO DIREITO -->
+    <VBox spacing="10">
+        <padding>
+            <Insets top="10" right="10" bottom="10" left="10"/>
+        </padding>
+
+        <Label text="Pedido:"/>
+        <ListView fx:id="listaPedido"/>
+
+        <Button text="Remover" onAction="#removerItem"/>
+
+        <Label fx:id="labelTotal" text="Total: R$ 0.00"/>
+
+        <Button text="Confirmar Pedido" onAction="#confirmarPedido"/>
+    </VBox>
+
+</HBox>
