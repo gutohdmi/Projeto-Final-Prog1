@@ -9,7 +9,6 @@
       fx:controller="com.feevale.ui.PrimaryController"
       spacing="20">
 
-    <!-- LADO ESQUERDO -->
     <VBox spacing="10">
         <padding>
             <Insets top="10" right="10" bottom="10" left="10"/>
@@ -18,13 +17,10 @@
         <Label text="Produto:"/>
         <ComboBox fx:id="comboProdutos"/>
 
-        <Label text="Quantidade:"/>
-        <Spinner fx:id="spinnerQtd"/>
 
         <Button text="Adicionar" onAction="#adicionarItem"/>
     </VBox>
 
-    <!-- LADO DIREITO -->
     <VBox spacing="10">
         <padding>
             <Insets top="10" right="10" bottom="10" left="10"/>

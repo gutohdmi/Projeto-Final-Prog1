@@ -30,10 +30,6 @@ public class PrimaryController {
                 FXCollections.observableArrayList(repository.buscarTodos())
         );
 
-        spinnerQtd.setValueFactory(
-                new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 20, 1)
-        );
-
         atendimentoAtual = controller.novoAtendimento();
         atualizarLista();
     }
